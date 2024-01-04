@@ -112,6 +112,7 @@ highlightButtons.forEach(highlightButton => {
 		}
 	};
 });
+// 显示隐藏标注的的按钮事件
 toggleNotesButton.onmouseup = () => {
 	if (toggleNotesButton.getAttribute("src") == "/src/ui/resources/button_note_visible.png") {
 		toggleNotesButton.src = "/src/ui/resources/button_note_hidden.png";
@@ -300,6 +301,7 @@ addEventListener("message", event => {
 					return download.downloadPage(pageData, tabData.options);
 				});
 		} else {
+			// 最终保存文件会走到此处
 			const pageData = {
 				content: message.content,
 				filename: message.filename || tabData.filename
@@ -312,13 +314,16 @@ addEventListener("message", event => {
 		tabData.docSaved = message.saved;
 	}
 	if (message.method == "onInit") {
+		// 初始化会走到此处
 		tabData.options.disableFormatPage = !message.formatPageEnabled;
 		formatPageButton.hidden = !message.formatPageEnabled;
+		// 设置标题
 		document.title = "[SingleFile] " + message.title;
 		if (message.filename) {
 			tabData.filename = message.filename;
 		}
 		if (message.icon) {
+			// 将icon绑定到具体的link元素上，link元素采用base64存储，存储图片对象
 			document.querySelectorAll("head > link[rel=icon]").forEach(element => element.remove());
 			const linkElement = document.createElement("link");
 			linkElement.rel = "icon";
